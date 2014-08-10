@@ -33,6 +33,7 @@ hr{
     background:#000;
 }
 .question{
+    cursor: pointer;
     position:relative;
 }
 .question.label{
