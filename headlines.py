@@ -55,19 +55,24 @@ def model():
 
 
 def get_headline():
-    lines = app.extensions['cindy']['headlines'].values()
-    model = app.extensions['cindy']['model']
-    ctx = [random.choice(lines).split()[0]]
-    words = ' '.join(w.decode('utf-8', 'ignore') for w in model.generate(20, context=ctx))
-    sents = words.split('.')
-    sents.sort(key=lambda s: len(s), reverse=True)
-    hl = sents[0]
-    hl = hl.replace(" 's", "'s").replace(' ,', ',').replace(' :', ':')\
-        .replace(' ?', '?').replace(" 'm", "'m")\
-        .replace(' !', '!').strip()\
-        .replace(" n't", "n't")
-    tokes = hl.split()
-    return tokes[0].capitalize() + ' ' + ' '.join(tokes[1:])
+    for attempts in range(10):
+        lines = app.extensions['cindy']['headlines'].values()
+        model = app.extensions['cindy']['model']
+        ctx = [random.choice(lines).split()[0]]
+        words = ' '.join(w.decode('utf-8', 'ignore') for w in model.generate(20, context=ctx))
+        sents = words.split('.')
+        sents.sort(key=lambda s: len(s), reverse=True)
+        hl = sents[0]
+        hl = hl.replace(" 's", "'s").replace(' ,', ',').replace(' :', ':')\
+            .replace(' ?', '?').replace(" 'm", "'m")\
+            .replace(' !', '!').strip()\
+            .replace(" n't", "n't")
+
+        tokes = hl.split()
+        headline = tokes[0].capitalize() + ' ' + ' '.join(tokes[1:])
+        if headline not in headlines():
+            break
+    return headline
 
 
 def get_model():
