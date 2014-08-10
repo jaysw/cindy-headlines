@@ -35,7 +35,7 @@ def get_words():
     for post in read_headline():
         for sentence in nltk.sent_tokenize(post):
             for word in nltk.word_tokenize(sentence):
-                words.append(word.lower().encode('utf8', 'ignore'))
+                words.append(word.encode('utf8', 'ignore'))
     print "%i words" % len(words)
     return words
 
@@ -86,8 +86,8 @@ def index():
 
 
 @app.route('/favicon.ico')
-def fuckoff():
-    return 'fuck off', 404
+def bleh():
+    return 'blargh!', 404
 
 
 @app.route('/guess/<uu>')
@@ -108,7 +108,7 @@ _model = get_model()
 print 'done'
 print "reading headline data..",
 with open('headlines.txt') as fin:
-    app.extensions['cindy']['headlines'] = {str(uuid.uuid4()): h.strip() for h in fin}
+    app.extensions['cindy']['headlines'] = {str(uuid.uuid4()): BeautifulSoup(h.strip()).text  for h in fin}
 print "done"
 
 if __name__ == '__main__':
