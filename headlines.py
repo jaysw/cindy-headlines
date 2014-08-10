@@ -63,10 +63,11 @@ def get_headline():
     sents.sort(key=lambda s: len(s), reverse=True)
     hl = sents[0]
     hl = hl.replace(" 's", "'s").replace(' ,', ',').replace(' :', ':')\
-            .replace(' ?', '?').replace(" 'm", "'m")\
-            .replace(' !', '!').strip()
+        .replace(' ?', '?').replace(" 'm", "'m")\
+        .replace(' !', '!').strip()\
+        .replace(" n't", "n't")
     tokes = hl.split()
-    return tokes[0].capitalize() + ' '  + ' '.join(tokes[1:])
+    return tokes[0].capitalize() + ' ' + ' '.join(tokes[1:])
 
 
 def get_model():
