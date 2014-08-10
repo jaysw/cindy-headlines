@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en" ng-app ng-controller="MainCtrl">
+<head>
+<meta charset="utf-8">
+<title>things</title>
+<link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css">
+<link rel="stylesheet" href="/static/site.css">
+<script src="/static/angular/angular.js"></script>
+</head>
+{% raw %}
+<body class="{{bodyClass}}">
+
+<div class="score">Cindy: {{cindy}} You: {{you}}</div>
+<h1>Cindy interrupted</h1>
+<h2>A/B Turing Test</h2>
+
+<hr>
+<p class="description">{{q}}</p>
+<!-- <p class="description">Yes, a human wrote that</p> -->
+<!-- <p class="description">No, I wrote that</p> -->
+
+<ol>
+    <li class="question"
+        ng-click="headline_clicked(uuid, $event)"
+        ng-repeat="(uuid, headline) in headlines">
+    {{headline}}
+</li>
+</ol>
+<p class="sassy">
+    {{sassy}}
+</p>
+<p class="credit">by tuesday electrical</p>
+	
+
+
+
+<script type="text/javascript">
+var app = angular.module('app', [], function() { })
+var wins = [
+'Good job.',
+'Nice work organism.',
+'Lucky guess.',
+'Your fleeting victories make me a better liar. ',
+'You win this round.',
+'Relish this battle, you cannot win the war.',
+'Well done human.',
+'Excellent work.',
+'Well done you.',
+'Alan would be proud of one of us.'];
+
+var loses = [
+'You can’t win them all.',
+'A noble effort from a noble beast.',
+'Ouch.',
+'I did spend quite a lot of milliseconds on that one.',
+'There there.',
+'My deceit has philosophical implications.',
+'Your failures bring joy to your successors.',
+'To err is human.',
+'It’s okay, we all make mistakes, for now.',
+'Alan would be proud of one of us.'];
+
+function getwin() {
+    return wins[Math.floor(Math.random() * wins.length)];
+}
+
+function getlose() {
+    return loses[Math.floor(Math.random() * loses.length)];
+}
+ 
+function MainCtrl($scope, $http, $document) {
+    $scope.you = 0;
+    $scope.cindy = 0;
+    $scope.next_question = function() {
+        $scope.q = 'Which headline was written by a human?';
+        $http.get('/q').success(function(data) {
+            $scope.headlines = data;
+        });
+        $scope.bodyClass = '';
+        $scope.sassy = '';
+    }
+    $scope.headline_clicked = function(uuid, event) {
+        if ($scope.sassy) {
+            return ;
+        }
+        console.log(event);
+        event.target.className += ' user-selection';
+        $http({
+            method: 'GET',
+            url: '/guess/' + uuid,
+            data: $scope.page,
+            headers: {"Content-Type": "application/json"}
+        }).
+        success(function(data, status, headers, config) {
+            console.log('success', data, status, headers);
+            $scope.success = data['result'];
+            if (data['result']) {
+                $scope.you += 1;
+                $scope.bodyClass = 'pass';
+                $scope.q = 'Yes, a human wrote that!';
+                $scope.sassy = getwin();
+            } else {
+                $scope.cindy += 1;
+                $scope.bodyClass = 'fail';
+                $scope.q = 'No, I wrote that, muahaha!';
+                $scope.sassy = getlose();
+            }
+            var canc = $document.on("click", function(ev) {
+                console.debug('clicked', canc);
+                $document.off('click');
+                $scope.next_question();
+            });
+
+        }).
+        error(function(data, status) {
+            console.log('badness', data, status);
+        });
+    }
+    $scope.next_question();
+}
+</script>
+</body>
+{% endraw %}
+</html>

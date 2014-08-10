@@ -1,0 +1,54 @@
+
+li {
+    margin-left: 0.7em;
+    list-style-type:  upper-alpha;
+}
+body{
+    font-family: sans-serif;
+    position:relative;
+    font-size:36pt;
+    padding:1em;
+}
+.pass{
+    background:rgba(54,213,122,1);
+}
+.fail{
+    background:rgba(255,105,0,1);
+}
+sup{
+    font-size:9pt;
+}
+h1, h2{
+    font-size:36pt;
+    font-weight:normal;
+    padding:0;
+    margin:0;
+}
+.score{
+    float:right;
+}
+hr{
+    height:0.25em;
+    border:none;
+    background:#000;
+}
+.question{
+    position:relative;
+}
+.question.label{
+    float:left;
+    font-weight:bold;
+    padding-right:0.5em;
+}
+.sassy{
+    margin-top:2em;
+}
+
+.user-selection{
+    background-color: rgba(255,255,255,1);
+}
+span.incorrect{
+    text-decoration:line-through;
+}
+.credit{font-size: 0.4em;}
+
