@@ -69,16 +69,15 @@ def get_headline():
     return tokes[0].capitalize() + ' '  + ' '.join(tokes[1:])
 
 
-
 def get_model():
-   if not app.extensions['cindy']['model']:
-       words = get_words()
-       print "Generating model...",
-       text = nltk.Text(words)
-       estimator = lambda fdist, bins: nltk.LidstoneProbDist(fdist, 0.2)
-       model = nltk.model.NgramModel(3, text, estimator=estimator)
-       app.extensions['cindy']['model'] = model
-       return model
+    if not app.extensions['cindy']['model']:
+        words = get_words()
+        print "Generating model...",
+        text = nltk.Text(words)
+        estimator = lambda fdist, bins: nltk.LidstoneProbDist(fdist, 0.2)
+        model = nltk.model.NgramModel(3, text, estimator=estimator)
+        app.extensions['cindy']['model'] = model
+        return model
 
 
 @app.route('/')
@@ -105,11 +104,14 @@ def question():
     return json.dumps(posts), 200, {'content-type': 'text/json'}
 
 
+_model = get_model()
+print 'done'
+print "reading headline data..",
+with open('headlines.txt') as fin:
+    app.extensions['cindy']['headlines'] = {str(uuid.uuid4()): h.strip() for h in fin}
+print "done"
+
 if __name__ == '__main__':
-    model = get_model()
-    print 'done'
-    with open('headlines.txt') as fin:
-        app.extensions['cindy']['headlines'] = {str(uuid.uuid4()): h.strip() for h in fin}
     app.run(debug=True, host='0.0.0.0')
 
 
