@@ -26,6 +26,7 @@ h1, h2{
 }
 .score{
     float:right;
+    font-size: 0.6em;
 }
 hr{
     height:0.25em;
