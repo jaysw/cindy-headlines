@@ -36,6 +36,11 @@ hr{
     cursor: pointer;
     position:relative;
 }
+
+.description{
+    height:2em;
+}
+
 .question.label{
     float:left;
     font-weight:bold;
