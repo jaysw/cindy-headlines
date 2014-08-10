@@ -58,7 +58,7 @@ def get_headline():
     lines = app.extensions['cindy']['headlines'].values()
     model = app.extensions['cindy']['model']
     ctx = [random.choice(lines).split()[0]]
-    words = ' '.join(model.generate(20, context=ctx))
+    words = ' '.join(w.decode('utf-8', 'ignore') for w in model.generate(20, context=ctx))
     sents = words.split('.')
     sents.sort(key=lambda s: len(s), reverse=True)
     hl = sents[0]
