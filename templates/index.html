@@ -97,12 +97,12 @@ function MainCtrl($scope, $http, $document) {
             if (data['result']) {
                 $scope.you += 1;
                 $scope.bodyClass = 'pass';
-                $scope.q = 'Yes, a human wrote that!';
+                $scope.q = 'Yes, a human wrote that.';
                 $scope.sassy = getwin();
             } else {
                 $scope.cindy += 1;
                 $scope.bodyClass = 'fail';
-                $scope.q = 'No, I wrote that, muahaha!';
+                $scope.q = 'No, I wrote that.';
                 $scope.sassy = getlose();
             }
             var canc = $document.on("click", function(ev) {
