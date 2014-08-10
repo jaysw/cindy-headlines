@@ -21,4 +21,4 @@ def getem(key):
             print "DONE: %i" % total
 
 if __name__ == '__main__':
-    getem(sys.argv[0])
+    getem(sys.argv[1])
